@@ -241,13 +241,15 @@ const { ethers, Wallet } = require("ethers");
         const transactionResponse = await transaction.wait(1);
     }
     let contract = new ethers.Contract(contractAddress, abi, signers[0]);
-
-
-    let address = await contract.s_players(0);
-    let address1 = await contract.s_players(1);
-    let address2 = await contract.s_players(2);
-    console.log("Address is:", address);
-    console.log("Address1 is:", address1);
-    console.log("Address2 is:", address2);
-
+    console.log("Picking winner now.")
+    const tx1 = await contract.getRandomWords(1);
+    console.log("Req to vrf made, starting timeout.")
+    setTimeout(() => {
+        console.log("I'm inside set timeout")
+    }, 60);
+    const tx2 = await contract.pickWinner();
+    console.log("tx2 is: ", tx2)
+    console.log("Winner is picked.")
+    let addOfWinner = await contract.s_addressOfWinner();
+    console.log("Winner is: ", addOfWinner)
 })();
